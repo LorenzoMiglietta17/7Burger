@@ -1,0 +1,21 @@
+body {
+    background-color: #FFD700 !important;
+}
+
+.navbar {
+    background-color: #000000 !important;
+}
+
+.navbar-brand,
+.nav-link {
+    color: white !important;
+}
+
+footer {
+    background-color: #000000 !important;
+    color: white !important;
+}
+
+footer a {
+    color: white !important;
+}
