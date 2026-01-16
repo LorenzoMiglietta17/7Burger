@@ -14,9 +14,173 @@
                         <a href="{{ route('menu') }}" class="btn-primary">Scopri il Menu</a>
                     </div>
                 </div>
+                <div class="col-lg-6 d-flex justify-content-center align-items-center">
+                    <div class="satisfaction-counter">
+                        <div class="counter-circle">
+                            <svg class="progress-ring" width="180" height="180">
+                                <circle class="progress-ring-bg" cx="90" cy="90" r="80"/>
+                                <circle class="progress-ring-fill" cx="90" cy="90" r="80"/>
+                            </svg>
+                            <div class="counter-text">
+                                <span class="counter-number" id="counter">0</span>
+                                <span class="counter-symbol">%</span>
+                            </div>
+                        </div>
+                        <p class="counter-label">Clienti Soddisfatti</p>
+                </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .satisfaction-counter {
+            text-align: center;
+            animation: fadeInRight 1s ease-out;
+        }
+
+        .counter-circle {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 30px;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+        }
+
+        .progress-ring-bg {
+            fill: none;
+            stroke: rgba(255, 215, 0, 0.2);
+            stroke-width: 8;
+        }
+
+        .progress-ring-fill {
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dashoffset: 0;
+        }
+
+        .counter-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .counter-number {
+            display: block;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #FFD700;
+            line-height: 1;
+        }
+
+        .counter-symbol {
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+
+        .counter-label {
+            color: #ffffff;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .satisfaction-counter {
+                margin-top: 40px;
+            }
+
+            .counter-circle {
+                width: 150px;
+                height: 150px;
+            }
+
+            .progress-ring {
+                width: 150px;
+                height: 150px;
+            }
+
+            .counter-number {
+                font-size: 2.5rem;
+            }
+
+            .counter-label {
+                font-size: 1rem;
+            }
+        }
+    </style>
+
+    <svg style="display: none;">
+        <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FFC700;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counter = document.getElementById('counter');
+            const progressRing = document.querySelector('.progress-ring-fill');
+            const circumference = 2 * Math.PI * 80; // Calcolo corretto della circonferenza
+            
+            progressRing.style.strokeDasharray = circumference;
+            progressRing.style.strokeDashoffset = circumference;
+            
+            let currentValue = 0;
+            const targetValue = 100;
+            const duration = 2500; // 2.5 secondi
+            const startTime = Date.now();
+
+            function easeOutQuad(t) {
+                return 1 - (1 - t) * (1 - t);
+            }
+
+            function updateCounter() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const easedProgress = easeOutQuad(progress);
+                
+                currentValue = Math.floor(easedProgress * targetValue);
+                counter.textContent = currentValue;
+
+                const offset = circumference - (easedProgress * circumference);
+                progressRing.style.strokeDashoffset = offset;
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    // Assicurati che sia completamente riempito
+                    counter.textContent = '100';
+                    progressRing.style.strokeDashoffset = '0';
+                }
+            }
+
+            updateCounter();
+        });
+    </script>
 </section>
 
 <!-- Specialità Section -->
