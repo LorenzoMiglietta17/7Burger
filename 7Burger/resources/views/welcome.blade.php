@@ -1,6 +1,4 @@
 <x-layout>
+  <x-hero></x-hero>
+  <x-footer></x-footer>
 </x-layout>
-<x-hero></x-hero>
-<body>
-</body>
-<x-footer></x-footer>
